@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  php:
+    build: ./php
+    volumes:
+      - ./html:/var/www/html
+    ports:
+      - 8080:80
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=calendar
+      - MYSQL_USER=calendar
+      - MYSQL_PASSWORD=calendar
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=calendar
+      - PMA_PASSWORD=calendar
+    links:
+      - mysql
+    ports:
+      - 4040:80
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
